@@ -2,14 +2,14 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class NewMessage implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     public $message;
 
@@ -20,18 +20,12 @@ class NewMessage implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return ['chat']; // 📌 Este es el canal donde Redis debería recibir eventos
+        return new Channel('chat'); // ✅ Canal con prefijo aplicado
     }
 
     public function broadcastAs()
     {
-        return 'new-message'; // 📌 Nombre del evento en el frontend
+        return 'new-message';
     }
 
-    public function broadcastWith()
-    {
-        return [
-            'message' => $this->message,
-        ];
-    }
 }

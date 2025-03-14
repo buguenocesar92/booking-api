@@ -12,6 +12,6 @@ class BroadcastServiceProvider extends ServiceProvider
         Broadcast::routes(); // Habilita las rutas de broadcasting
 
         // Carga las autorizaciones desde el nuevo archivo
-        require base_path('routes/user-channels.php');
+        require base_path('routes/channels.php');
     }
 }

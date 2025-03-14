@@ -16,15 +16,14 @@ class UserPrivateNotification implements ShouldBroadcast
         $this->userId = $userId;
     }
 
-    // Define el canal privado dinámico
     public function broadcastOn()
     {
         return new PrivateChannel('user.'.$this->userId); // Ej: "user.5"
     }
 
-    // Opcional: Personaliza el nombre del evento para el frontend
+    // Opcional: Nombre personalizado para el evento
     public function broadcastAs()
     {
-        return 'new.private.message';
+        return 'private.notification';
     }
 }

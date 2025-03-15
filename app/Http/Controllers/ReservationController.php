@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewReservationEvent;
 use App\Services\ReservationService;
 use App\Http\Requests\Reservation\StoreReservationRequest;
 /* use App\Http\Requests\Reservation\UpdateReservationRequest; */
@@ -24,10 +25,15 @@ class ReservationController extends Controller
         return response()->json($data);
     } */
 
-    public function store(StoreReservationRequest $request)
+    public function store(StoreReservationRequest $request): JsonResponse
     {
-        $data = $this->reservationService->create($request->validated());
-        return response()->json($data, 201);
+        $data = $request->validated();
+        $reservation = $this->reservationService->create($data);
+
+        // Emitir el evento en tiempo real para el profesional
+        broadcast(new NewReservationEvent($reservation, $reservation->professional_id));
+
+        return response()->json($reservation, 201);
     }
 
   /*   public function show($id)

@@ -1,14 +1,12 @@
 <?php
 
 return [
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'auth/*'],  // Asegúrate de incluir los endpoints que usas
     'allowed_methods' => ['*'],
-    // Especifica el origen exacto de tu frontend
-    'allowed_origins' => ['http://localhost:3000', 'http://localhost:5173'],
+    'allowed_origins' => ['http://localhost:3000'], // O ['*'] para desarrollo, pero cuidado en producción
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
     'max_age' => 0,
-    // Activa el soporte de credenciales para enviar cookies
-    'supports_credentials' => true,
+    'supports_credentials' => false,
 ];

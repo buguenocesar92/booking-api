@@ -31,7 +31,7 @@ class ReservationController extends Controller
         $reservation = $this->reservationService->create($data);
 
         // Emitir el evento en tiempo real para el profesional
-        broadcast(new NewReservationEvent($reservation, $reservation->professional_id));
+        /* broadcast(new NewReservationEvent($reservation, $reservation->professional_id)); */
 
         return response()->json($reservation, 201);
     }

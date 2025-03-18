@@ -8,3 +8,4 @@ require __DIR__ . '/api/users.php';
 
 require __DIR__ . '/api/professionals.php';
 require __DIR__ . '/api/reservations.php';
+require __DIR__ . '/api/specialties.php';

@@ -13,10 +13,11 @@ class ProfessionalService
         $this->repository = $repository;
     }
 
-    public function getAll()
+    public function getAll($search = null, $specialty = null, $perPage = 4)
     {
-        return $this->repository->getAll();
+        return $this->repository->getAll($search, $specialty, $perPage);
     }
+
 
     public function findById(int $id)
     {

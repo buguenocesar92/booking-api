@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\ProfessionalService;
 use App\Http\Requests\Professional\StoreProfessionalRequest;
 use App\Http\Requests\Professional\UpdateProfessionalRequest;
+use Illuminate\Http\Request; // Asegúrate de importar Request
+
 
 class ProfessionalController extends Controller
 {
@@ -15,11 +17,16 @@ class ProfessionalController extends Controller
         $this->professionalService = $professionalService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->professionalService->getAll();
+        $search = $request->query('search');
+        $specialty = $request->query('specialty');
+        $perPage = $request->query('per_page', 4); // Valor por defecto 10
+
+        $data = $this->professionalService->getAll($search, $specialty, $perPage);
         return response()->json($data);
     }
+
 
 /*     public function store(StoreProfessionalRequest $request)
     {

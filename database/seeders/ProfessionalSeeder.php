@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Professional;
+use App\Models\Specialty;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -18,21 +19,10 @@ class ProfessionalSeeder extends Seeder
             Role::create(['name' => 'professional', 'guard_name' => 'api']);
         }
 
-        $faker = Faker::create('es_ES'); // Usamos el locale español para datos en español
+        $faker = Faker::create('es_ES');
 
-        // Lista de especialidades para elegir aleatoriamente
-        $specialties = [
-            'Medicina General',
-            'Psicología',
-            'Ingeniería',
-            'Nutrición',
-            'Dermatología',
-            'Cardiología',
-            'Odontología',
-            'Fisioterapia',
-            'Pediatría',
-            'Ginecología'
-        ];
+        // Obtener todas las especialidades disponibles
+        $specialties = Specialty::all();
 
         // Crear 20 profesionales
         for ($i = 1; $i <= 20; $i++) {
@@ -40,21 +30,21 @@ class ProfessionalSeeder extends Seeder
             $user = User::create([
                 'name'     => $faker->name,
                 'email'    => $faker->unique()->safeEmail,
-                'password' => Hash::make('password'), // Contraseña de prueba
+                'password' => Hash::make('password'),
             ]);
 
             $user->assignRole('professional');
 
-            // Seleccionar una especialidad aleatoria
-            $specialty = $specialties[array_rand($specialties)];
+            // Elegir una especialidad aleatoriamente de la tabla specialties
+            $specialty = $specialties->random();
 
             // Crear el profesional
             Professional::create([
                 'user_id'     => $user->id,
-                'name'        => $user->name, // Asignamos el nombre del usuario
-                'specialty'   => $specialty,
+                'name'        => $user->name,
+                'specialty_id'=> $specialty->id,
                 'image'       => "https://picsum.photos/seed/pro{$i}/300/300",
-                'description' => $faker->sentence(10) // Descripción generada aleatoriamente
+                'description' => $faker->sentence(10),
             ]);
         }
     }

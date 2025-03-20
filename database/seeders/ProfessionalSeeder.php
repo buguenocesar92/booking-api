@@ -8,7 +8,6 @@ use App\Models\Specialty;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use Faker\Factory as Faker;
 
 class ProfessionalSeeder extends Seeder
 {
@@ -19,32 +18,64 @@ class ProfessionalSeeder extends Seeder
             Role::create(['name' => 'professional', 'guard_name' => 'api']);
         }
 
-        $faker = Faker::create('es_ES');
-
         // Obtener todas las especialidades disponibles
         $specialties = Specialty::all();
 
-        // Crear 20 profesionales
-        for ($i = 1; $i <= 20; $i++) {
+        // Datos predefinidos de los profesionales
+        $professionals = [
+            [
+                'name'        => 'Juan Pérez',
+                'email'       => 'juan.perez@example.com',
+                'description' => 'Experto en salud y bienestar.',
+            ],
+            [
+                'name'        => 'María Gómez',
+                'email'       => 'maria.gomez@example.com',
+                'description' => 'Especialista en nutrición y dietética.',
+            ],
+            [
+                'name'        => 'Carlos Sánchez',
+                'email'       => 'carlos.sanchez@example.com',
+                'description' => 'Profesional en terapias alternativas.',
+            ],
+            [
+                'name'        => 'Laura Rodríguez',
+                'email'       => 'laura.rodriguez@example.com',
+                'description' => 'Experta en medicina deportiva.',
+            ],
+            [
+                'name'        => 'Ana Martínez',
+                'email'       => 'ana.martinez@example.com',
+                'description' => 'Especialista en fisioterapia y rehabilitación.',
+            ],
+            [
+                'name'        => 'Miguel López',
+                'email'       => 'miguel.lopez@example.com',
+                'description' => 'Consultor en salud mental.',
+            ],
+        ];
+
+        // Crear 6 profesionales
+        foreach ($professionals as $index => $data) {
             // Crear usuario asociado al profesional
             $user = User::create([
-                'name'     => $faker->name,
-                'email'    => $faker->unique()->safeEmail,
+                'name'     => $data['name'],
+                'email'    => $data['email'],
                 'password' => Hash::make('password'),
             ]);
 
             $user->assignRole('professional');
 
-            // Elegir una especialidad aleatoriamente de la tabla specialties
+            // Elegir una especialidad aleatoriamente
             $specialty = $specialties->random();
 
             // Crear el profesional
             Professional::create([
-                'user_id'     => $user->id,
-                'name'        => $user->name,
-                'specialty_id'=> $specialty->id,
-                'image'       => "https://picsum.photos/seed/pro{$i}/300/300",
-                'description' => $faker->sentence(10),
+                'user_id'      => $user->id,
+                'name'         => $data['name'],
+                'specialty_id' => $specialty->id,
+                'image'        => "https://picsum.photos/seed/pro" . ($index + 1) . "/300/300",
+                'description'  => $data['description'],
             ]);
         }
     }
